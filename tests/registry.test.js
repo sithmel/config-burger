@@ -6,6 +6,7 @@ describe('loadRegistry', function () {
   var conditions = ['_env', '_country']; // _env is more important
   var layers = [
     {
+      basic: 'test',
       value: 1
     },
     {
@@ -18,6 +19,7 @@ describe('loadRegistry', function () {
       desc: 'USA'
     }
   ];
+
   var reg;
 
   beforeEach(function () {
@@ -31,28 +33,61 @@ describe('loadRegistry', function () {
 
   it('returns a simple config for undefined args', function () {
     var config = getConfig(reg);
-    assert.deepEqual(config, { value: 1 });
+    assert.deepEqual(config, { value: 1, basic: 'test' });
   });
 
   it('returns a simple config', function () {
     var config = getConfig(reg, {});
-    assert.deepEqual(config, { value: 1 });
+    assert.deepEqual(config, { value: 1, basic: 'test' });
   });
 
   it('returns a specific config', function () {
     var config = getConfig(reg, {_env: 'development'});
-    assert.deepEqual(config, { value: 2 });
+    assert.deepEqual(config, { value: 2, basic: 'test' });
   });
 
   it('returns a specific config (2)', function () {
     var config = getConfig(reg, {_country: 'us'});
-    assert.deepEqual(config, { value: 3, desc: 'USA' });
+    assert.deepEqual(config, { value: 3, desc: 'USA', basic: 'test' });
   });
 
   it('returns a specific config (3)', function () {
     var config = getConfig(reg, {_country: 'us', _env: 'development'});
-    assert.deepEqual(config, { value: 2, desc: 'USA' });
+    assert.deepEqual(config, { value: 2, desc: 'USA', basic: 'test' });
+  });
+
+  it('overrides deeply', function () {
+    var layers = [
+      {
+        value: [1, 2]
+      },
+      {
+        _env: 'development',
+        'value[2]': 3,
+        'value[0]': 'a'
+      },
+    ];
+    var reg1 = loadRegistry(layers, ['_env']);
+    var config1 = getConfig(reg1, {});
+    assert.deepEqual(config1, { value: [1, 2] });
+    var config2 = getConfig(reg1, {_env: 'development'});
+    assert.deepEqual(config2, { value: ['a', 2, 3] });
+  });
+
+  it('uses regexp', function () {
+    var layers = [
+      {
+        value: 1
+      },
+      {
+        '_env::re': '(dev|prod)',
+        value: 2
+      },
+    ];
+    var reg1 = loadRegistry(layers, ['_env']);
+    var config1 = getConfig(reg1, {});
+    assert.deepEqual(config1, { value: 1 });
+    var config2 = getConfig(reg1, {_env: 'dev'});
+    assert.deepEqual(config2, { value: 2 });
   });
 });
-// deep override test
-// regexp/strings
