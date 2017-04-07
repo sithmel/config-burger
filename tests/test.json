@@ -1,0 +1,15 @@
+[
+  {
+    "basic": "test",
+    "value": 1
+  },
+  {
+    "_env": "development",
+    "value": 2
+  },
+  {
+    "_country": "us",
+    "value": 3,
+    "desc": "USA"
+  }
+]

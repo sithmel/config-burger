@@ -1,7 +1,3 @@
-var loadRegistry = require('./lib/load-registry');
-var getConfig = require('./lib/get-config');
+var Registry = require('./lib/registry');
 
-module.exports = {
-  loadRegistry: loadRegistry,
-  getConfig: getConfig
-};
+module.exports = Registry;

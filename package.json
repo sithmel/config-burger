@@ -1,5 +1,5 @@
 {
-  "name": "config-matcher",
+  "name": "config-burger",
   "version": "0.0.1",
   "description": "",
   "main": "index.js",
@@ -16,7 +16,7 @@
   "keyword": [
     "configuration"
   ],
-  "repository": "git@github.com:sithmel/config-matcher.git",
+  "repository": "git@github.com:sithmel/config-burger.git",
   "author": "Maurizio Lupo <maurizio.lupo@gmail.com>",
   "license": "MIT",
   "devDependencies": {
