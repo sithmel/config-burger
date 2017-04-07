@@ -1,8 +1,8 @@
-#Config-burger
+# Config-burger
 
 Compose a configuration file like it was a burger, with all the layers you like, yum yum!
 
-##Create a registry
+## Create a registry
 You create an empty registry passing an array of strings. These are the conditions that should be checked to decide to use or not a specific layer. The order of the conditions determine the priority.
 ```js
 var Registry = require('config-burger');
@@ -32,7 +32,7 @@ reg.loadConfig([
 ]);
 ```
 
-##Getting the configuration
+## Getting the configuration
 A layer can have no conditions at all (like the first one). In this case it is always used.
 If it contains a condition is going to be used to compose the final object. Some example:
 ```js
@@ -84,7 +84,7 @@ reg.getConfig({ vegetarian: 'yes', hot: 'very hot' })
 ```
 This is interesting: the configuration matches 3 layers: the generic one, the vegetarian and the "very hot", but the "main" of the "very hot" layer conflicts with the one in the vegetarian layer. The vegetarian is more prioritary so it win.
 
-##Adding functions
+## Adding functions
 You can add to the registry a function or object. This is treated as a normal layer:
 ```js
 reg.add({
@@ -117,7 +117,7 @@ reg.add({
 });
 ```
 
-##Use regexp for matching
+## Use regexp for matching
 A layer can contain a condition that matches using a regular expression. In the JSON file is postfixed by "::re", :
 ```js
 reg.add({
@@ -136,7 +136,7 @@ reg.loadConfig([
 ]);
 ```
 
-##Overriding inner properties
+## Overriding inner properties
 A layer can contain properties defining a inner part of the object to override. This uses the lodash/set syntax:
 ```js
 reg.add({
@@ -148,7 +148,7 @@ reg.add({
 This overrides the first item of the condiments array contained in the previous layer
 
 
-##Load config from files
+## Load config from files
 The registry can load the layers from one or more JSON files. Given that a single layer is always an object, it assumes that an array is always a list of different layers.
 ```js
 reg.loadConfigFiles(['default.json', 'extra.json']);
