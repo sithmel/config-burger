@@ -150,3 +150,73 @@ describe('loadRegistry', function () {
     });
   });
 });
+
+describe('readme', function () {
+  beforeEach(function () {
+    reg = new Registry(['vegetarian', 'hot']);
+    reg.loadConfig([
+      {
+        bread: 'toasted bread',
+        main: 'rare beef burger',
+        condiment: 'mayo',
+      },
+      {
+        vegetarian: 'yes',
+        main: 'soya burger'
+      },
+      {
+        hot: 'hot',
+        condiment: 'jalapeno pepper'
+      },
+      {
+        hot: 'very hot',
+        main: 'fiery buffalo burger'
+      }
+    ]);
+  });
+
+  it('matches the generic', function () {
+    return reg.getConfig({})
+    .then(function (config) {
+      assert.deepEqual(config, {
+        bread: 'toasted bread',
+        main: 'rare beef burger',
+        condiment: 'mayo'
+      });
+    });
+  });
+
+  it('matches the vegetarian', function () {
+    return reg.getConfig({ vegetarian: 'yes' })
+    .then(function (config) {
+      assert.deepEqual(config, {
+        bread: 'toasted bread',
+        main: 'soya burger',
+        condiment: 'mayo'
+      });
+    });
+  });
+
+  it('matches the vegetarian and hot', function () {
+    return reg.getConfig({ vegetarian: 'yes', hot: 'hot' })
+    .then(function (config) {
+      assert.deepEqual(config, {
+        bread: 'toasted bread',
+        main: 'soya burger',
+        condiment: 'jalapeno pepper'
+      });
+    });
+  });
+
+  it('matches the vegetarian and hot', function () {
+    return reg.getConfig({ vegetarian: 'yes', hot: 'very hot' })
+    .then(function (config) {
+      assert.deepEqual(config, {
+        bread: 'toasted bread',
+        main: 'soya burger',
+        condiment: 'mayo'
+      });
+    });
+  });
+
+});
