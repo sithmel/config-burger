@@ -1,6 +1,6 @@
 {
   "name": "config-burger",
-  "version": "0.0.4",
+  "version": "1.0.0",
   "description": "Compose an object using layers that match a set of conditions",
   "main": "index.js",
   "scripts": {
