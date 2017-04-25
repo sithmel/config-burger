@@ -22,8 +22,8 @@ describe('Registry', function () {
         reg = new Registry(conditions);
         reg.add({}, function () { return { basic: 'test', value: 1 }; });
         reg.add({ _env: 'development' }, Promise.resolve({ value: 2 }));
-        reg.add({ _country: 'us' }, function () {
-          return Promise.resolve({ value: 3, desc: 'USA' });
+        reg.add({ _country: 'us' }, function (cond, obj) {
+          return Promise.resolve({ value: 3, desc: obj.country });
         });
       }
     },
@@ -67,35 +67,35 @@ describe('Registry', function () {
       });
 
       it('returns a simple config for undefined args', function () {
-        return reg.getConfig()
+        return reg.getConfig(undefined, { country: 'USA' })
         .then(function (config) {
           assert.deepEqual(config, { value: 1, basic: 'test' });
         });
       });
 
       it('returns a simple config', function () {
-        return reg.getConfig({})
+        return reg.getConfig({}, { country: 'USA' })
         .then(function (config) {
           assert.deepEqual(config, { value: 1, basic: 'test' });
         });
       });
 
       it('returns a specific config', function () {
-        return reg.getConfig({_env: 'development'})
+        return reg.getConfig({_env: 'development'}, { country: 'USA' })
         .then(function (config) {
           assert.deepEqual(config, { value: 2, basic: 'test' });
         });
       });
 
       it('returns a specific config (2)', function () {
-        return reg.getConfig({_country: 'us'})
+        return reg.getConfig({_country: 'us'}, { country: 'USA' })
         .then(function (config) {
           assert.deepEqual(config, { value: 3, desc: 'USA', basic: 'test' });
         });
       });
 
       it('returns a specific config (3)', function () {
-        return reg.getConfig({_country: 'us', _env: 'development'})
+        return reg.getConfig({_country: 'us', _env: 'development'}, { country: 'USA' })
         .then(function (config) {
           assert.deepEqual(config, { value: 2, desc: 'USA', basic: 'test' });
         });
@@ -103,7 +103,6 @@ describe('Registry', function () {
     });
   });
 });
-
 
 describe('loadRegistry', function () {
   it('overrides deeply', function () {

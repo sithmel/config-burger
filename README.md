@@ -82,7 +82,7 @@ reg.getConfig({ vegetarian: 'yes', hot: 'very hot' })
   // }
 });  
 ```
-This is interesting: the configuration matches 3 layers: the generic one, the vegetarian and the "very hot", but the "main" of the "very hot" layer conflicts with the one in the vegetarian layer. The vegetarian is more prioritary so it win.
+This is interesting: the configuration matches 3 layers: the generic one, the vegetarian and the "very hot", but the "main" of the "very hot" layer conflicts with the one in the vegetarian layer. The vegetarian is more prioritary so it wins.
 
 ## Adding functions
 You can add to the registry a function or object. This is treated as a normal layer:
@@ -107,7 +107,7 @@ The function can also be asynchronous returning a Promise object. THE LIBRARY DO
 ```js
 reg.add({
   vegetarian: 'vegan'
-}, function (conditions) { // obj is the conditions object
+}, function (conditions) {
   http.get('/random_vegan_condiment')
   .then(function (condiment) {
     return {
@@ -115,6 +115,24 @@ reg.add({
     };
   })
 });
+```
+When using functions to compose the configuration you might want to pass some arguments to them. They can be added as second argument of getConfig:
+```js
+reg.add({
+  vegetarian: 'vegan'
+}, function (conditions, config) {
+  http.get(config.url)
+  .then(function (condiment) {
+    return {
+      condiment: condiment
+    };
+  })
+});
+
+reg.getConfig({ vegetarian: 'vegan' }, { url: '/random_vegan_condiment' });
+.then(function (config) {
+  // ...
+});  
 ```
 
 ## Use regexp for matching
