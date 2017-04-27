@@ -150,6 +150,72 @@ describe('loadRegistry', function () {
   });
 });
 
+it('uses numbers', function () {
+  var layers = [
+    {
+      value: 1
+    },
+    {
+      '_env': 10,
+      value: 2
+    },
+  ];
+  var reg1 = new Registry(['_env']);
+
+  reg1.loadConfig(layers);
+  var config1 = reg1.getConfig({});
+  var config2 = reg1.getConfig({_env: 10});
+  return Promise.all([config1, config2])
+  .then(function (cfg) {
+    assert.deepEqual(cfg[0], { value: 1 });
+    assert.deepEqual(cfg[1], { value: 2 });
+  });
+});
+
+it('uses booleans', function () {
+  var layers = [
+    {
+      value: 1
+    },
+    {
+      '_env': false,
+      value: 2
+    },
+  ];
+  var reg1 = new Registry(['_env']);
+
+  reg1.loadConfig(layers);
+  var config1 = reg1.getConfig({});
+  var config2 = reg1.getConfig({_env: false});
+  return Promise.all([config1, config2])
+  .then(function (cfg) {
+    assert.deepEqual(cfg[0], { value: 1 });
+    assert.deepEqual(cfg[1], { value: 2 });
+  });
+});
+
+it('uses null', function () {
+  var layers = [
+    {
+      value: 1
+    },
+    {
+      '_env': null,
+      value: 2
+    },
+  ];
+  var reg1 = new Registry(['_env']);
+
+  reg1.loadConfig(layers);
+  var config1 = reg1.getConfig({});
+  var config2 = reg1.getConfig({_env: null});
+  return Promise.all([config1, config2])
+  .then(function (cfg) {
+    assert.deepEqual(cfg[0], { value: 1 });
+    assert.deepEqual(cfg[1], { value: 2 });
+  });
+});
+
 describe('readme', function () {
   beforeEach(function () {
     reg = new Registry(['vegetarian', 'hot']);

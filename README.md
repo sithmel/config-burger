@@ -153,6 +153,10 @@ reg.loadConfig([
   }
 ]);
 ```
+The latter allows to use reg exp matching in JSON files.
+
+## Matching booleans, numbers, etc.
+The library used for matching is [occamsrazor-validator](https://github.com/sithmel/occamsrazor-validator#validatormatch). It can matches perform matching with numbers, boolean, objects (recursively) etc.
 
 ## Overriding inner properties
 A layer can contain properties defining a inner part of the object to override. This uses the lodash/set syntax:
