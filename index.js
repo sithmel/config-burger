@@ -1,3 +1,3 @@
-var Registry = require('./lib/registry');
+var Registry = require('./lib/registry')
 
-module.exports = Registry;
+module.exports = Registry
